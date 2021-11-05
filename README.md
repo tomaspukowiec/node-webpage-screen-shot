@@ -1,6 +1,6 @@
 # node-webpage-screen-shot
 
-Simple Node APP to make screen-shot of defined webpages and then send them by e-mail. Page screen-shot can be configured. Possible to make a screen even for pages protected by authentication (Simple Login form).
+Simple Node APP to make screen-shot of defined webpages and then send them by e-mail. Page screen-shot can be configured. Possible to make a screen-shot even for pages protected by authentication (Simple login form).
 
 ## Configuration
 
