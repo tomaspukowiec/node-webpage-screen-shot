@@ -4,7 +4,7 @@
   "description": "",
   "main": "./dist/app.js",
   "scripts": {
-    "start": "npm run compile && node ./dist/app.js",
+    "start": "npm run compile && cd dist && node app.js",
     "compile": "tsc",
     "lint": "eslint . --ext .ts",
     "prettier-format": "prettier --config .prettierrc.json --write ./src",

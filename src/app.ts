@@ -1,24 +1,33 @@
-import { pageForScreenShot, PUPPETEER_OPTIONS } from './models/const';
+import puppeteer from 'puppeteer';
+import { FILE_LOG_ERROR, PUPPETEER_OPTIONS } from './models/const';
+import { Config } from './models/model';
+import getConfigJSON from './libs/config';
+import { log } from './libs/util';
+import PageScreenShot from './classes/page-screen-shot';
+import sendEmail from './libs/mail';
 
-const puppeteer = require('puppeteer');
-
-const run = async () => {
+(async () => {
   const browser = await puppeteer.launch(PUPPETEER_OPTIONS);
-  const page = await browser.newPage();
-  // await page.setViewport({ width: 1200, height: 720 });
+  try {
+    const { pageData, mailer }: Config = await getConfigJSON();
 
-  await page.goto(pageForScreenShot.url, { waitUntil: 'networkidle0' });
-
-  // Scroll to the bottom of the page
-  // await page.evaluate('window.scrollTo(0, document.body.scrollHeight)');
-
-  await page.screenshot({
-    path: pageForScreenShot.screenShotName,
-    fullPage: pageForScreenShot.fullPage,
-  });
-  await browser.close();
-};
-
-run().then(() => {
-  console.log('JOB DONE');
-});
+    await Promise.all(
+      pageData.map(async (page) => {
+        const browserPage = await browser.newPage();
+        const pageScreenShot = new PageScreenShot(browserPage, page);
+        await pageScreenShot.process();
+      })
+    )
+      .then(() => {
+        sendEmail(mailer, pageData);
+      })
+      .catch((error) => {
+        const message = `Error in promises ${error}`;
+        log(FILE_LOG_ERROR, message).then();
+      });
+  } catch (err: any) {
+    log(FILE_LOG_ERROR, err).then();
+  } finally {
+    await browser.close();
+  }
+})();
