@@ -17,6 +17,7 @@ export default class PageScreenShot {
     try {
       await this.login();
       await this.setViewPort();
+      await this.cookie();
       await this.goToUrl();
       await this.scrollToBottom();
       await this.screenShot();
@@ -74,6 +75,12 @@ export default class PageScreenShot {
       await this.browserPage.evaluate(
         'window.scrollTo(0, document.body.scrollHeight)'
       );
+    }
+  };
+
+  private cookie = async () => {
+    if ('cookie' in this.pageData && 'selector' in this.pageData.cookie) {
+      await this.browserPage.click(this.pageData.cookie.selector);
     }
   };
 

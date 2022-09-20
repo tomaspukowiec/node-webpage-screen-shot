@@ -43,6 +43,9 @@ Requires **config.json** file in the ROOT
                "user":"username",
                "pass":"mypassword"
             }
+         },
+         "cookie": {
+            "selector": "#js-LayersReact div div div button:nth-child(2)"
          }
       }
    ],

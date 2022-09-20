@@ -26,6 +26,9 @@ export interface PageData {
       pass: string;
     };
   };
+  cookie: {
+    selector: string;
+  };
 }
 
 export interface Mailer {
